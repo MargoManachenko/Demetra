@@ -1,0 +1,215 @@
+body {
+  margin: 0;
+  font-size: 16px;
+  background: url(./starsky.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  letter-spacing: 1.2px;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.4s;
+}
+
+a:hover {
+  color: #1976d2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.top-bar a{
+  font-family: sans-serif;
+}
+
+.top-bar {
+  padding: 20px 250px;
+  margin-bottom: 50px;
+}
+.top-bar::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.top-bar-left {
+  float: left;
+  font-size: 1.5em;
+/*  background: url(./logoGD.png) no-repeat center center fixed; 
+  background-size: cover;*/
+}
+
+.top-bar-left a:hover{
+  color: #ffffff;
+}
+
+.top-bar-right {
+  float: right;
+  margin-right: 100px;
+}
+
+.top-bar-right:last-child {
+  margin-right: 0px;
+}
+
+.top-bar a,
+.nav a {
+  margin: 0 24px;
+}
+
+.settingsContainer{
+  width: 300px;
+  margin-left: 100px;
+
+}
+
+.settingsContainer h3{
+  margin-left: -226px;
+}
+
+.containerForSettings {
+  margin: 0 auto;
+  text-align: center;
+  width: 500px;
+  letter-spacing: 1.2px;
+}
+
+.containerForSettings p{
+  font-size: 18px;
+}
+
+.form{
+  padding: 10px;
+}
+
+
+.card-heading p{
+  padding-top: 24px;
+  font-size: 24px;
+}
+
+.containerForNightPhase{
+  margin: 0 auto;
+  width: 700px;
+}
+.phaseInfo{
+  margin: 10px;
+  width: 274px;  
+  margin-bottom: 21px;
+  letter-spacing: 0px;
+}
+
+.container {
+  margin: 0 auto;
+  text-align: center;
+  width: 700px;
+  line-height: 23px;
+  letter-spacing: 1.2px;
+}
+
+.field-line, .button-line {
+  padding: 16px;
+}
+
+.error-message {
+  padding: 0 16px;
+  color: tomato;
+}
+
+.success-message {
+  padding: 0 16px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.deleteNightMessage{
+  margin-bottom: 10px;
+}
+
+.graph{
+  float: right;
+  width: 550px;
+  margin-left: 17px;
+}
+.verticalAxis{
+  float: left;
+  letter-spacing: 0px;
+}
+
+.verticalAxis p{
+  margin-bottom: 123px;
+  margin-right: -14px;
+  margin-left: 18px;
+  font-size: 14px;
+}
+
+.horizontalAxis p{
+  float: left;
+}
+
+.lastchild{
+  margin-bottom: 0px;
+}
+
+.clearfix {
+  display: table;
+  content: '';
+  clear:both;  
+  margin: 10px;  
+}
+
+.nightText p{
+  font-size: 14px;
+}
+
+.submitBtn{
+ background: #ffb347 !important;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #ffcc33, #ffb347) !important;  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #ffcc33, #ffb347) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.instuctionContainerUl{
+  text-align: left;
+  list-style: none;
+  margin-left: 177px;  
+}
+.instuctionContainer{
+  margin-top: -18px;
+}
+    
+.homeBlock{
+  font-size: 13px;
+  padding: 12px 39px;
+  text-align: left;
+  line-height: 23px;
+  letter-spacing: 1.2px;
+  margin: 18px;
+}
+
+.homeBlockHeading{
+  font-size: 25px;
+}
+.homeBlockHeading2{
+  font-size: 21px;
+  margin-bottom: -9px;
+}
+
+.container img{
+  width: 434px;
+  background: #ffffff;
+}
+.img1{
+      text-align: center;
+    margin: 38px;
+
+}
+.homeBlockHeadingBig{
+  text-align: center;
+    font-size: 43px;
+    line-height: 44px;
+    margin: -1px;
+}
