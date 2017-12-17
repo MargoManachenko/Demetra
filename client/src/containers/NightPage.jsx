@@ -11,7 +11,7 @@ class NightPage extends React.Component {
 
     // set the initial component state
     this.state = {
-      userID: '5a2405c50ae9f865ec989471',
+      userID: '5a369c368309260021d20c91',
       errors: {},
       nightsList: [],
       nightsListExist: false
@@ -20,7 +20,7 @@ class NightPage extends React.Component {
 
   componentDidMount() {  
 
-      const userID = '5a2405c50ae9f865ec989471'; 
+      const userID = '5a369c368309260021d20c91'; 
       const formData = `userID=${userID}`;
       
       // create an AJAX request
@@ -86,7 +86,7 @@ class NightPage extends React.Component {
     else{
       return (
         <div>
-          <Card className="container">
+          <Card className="container" style={{backgroundColor: 'rgba(255,255,255,0.1)', color: 'white'}}>
           <CardTitle
             title="Sorry, no sleeps in your account"
             subtitle="Try to follow the instruction and start the sleep on your Dashboar"/>

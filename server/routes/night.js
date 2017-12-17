@@ -45,21 +45,22 @@ router.post('/isNight', (req, res, next) =>{
 
 	const currentUserID = req.body.userID;
 	let isNightCurrentUser;
-
+	console.log(currentUserID);
 	Night.find({userID : currentUserID}, function(err, nights) {
 	  	if(err){
 	  		console.log(err);
 	  		return err;
 	  	}
-	  	
-	  	let lastNight = nights[nights.length-1];
 
-	  	if(nights == null){
+	  	console.log(nights);	  
+
+	  	if(nights.length == 0){
 	  		isNightCurrentUser = false;
 	  		return res.status(200).json({
 	  			isNight: isNightCurrentUser
 	  		});
-	  	}
+	  	}	
+	  	let lastNight = nights[nights.length-1];
 		if(lastNight.endDateOfNight == null){	      
 			isNightCurrentUser = true;
 			return res.status(200).json({

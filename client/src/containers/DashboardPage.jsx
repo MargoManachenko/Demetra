@@ -13,7 +13,7 @@ class DashboardPage extends React.Component {
       secretData: '',
       isNight : false,
       successMessage: '',
-      userID: '5a2405c50ae9f865ec989471',
+      userID: '5a369c368309260021d20c91',
       buttonText: ''
     };
 

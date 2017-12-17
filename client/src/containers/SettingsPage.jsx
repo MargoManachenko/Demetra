@@ -17,7 +17,7 @@ class SettingsPage extends React.Component {
 
     // set the initial component state
     this.state = {
-      userID: '5a2405c50ae9f865ec989471',
+      userID: '5a369c368309260021d20c91',
       errors: {},
       successMessage,
       lightMode: '',
@@ -29,7 +29,7 @@ class SettingsPage extends React.Component {
   }
 
   componentDidMount() {
-    const userID = '5a2405c50ae9f865ec989471'; 
+    const userID = '5a369c368309260021d20c91'; 
     const formData = `userID=${userID}`;
     
     // create an AJAX request

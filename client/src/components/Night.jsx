@@ -46,17 +46,20 @@ class Night extends React.Component{
 
   getFormatTime(){
 
-    if(this.state.night.endDateOfNight == null){
-      return ' can not show. The night is not finished yet';
+    if(this.state.nightIs){
+      if(this.state.night.endDateOfNight == null){
+        return ' can not show. The night is not finished yet';
+      }
+      let milisecons = Number(this.state.night.endDateOfNight) - Number(this.state.night.startDateOfNight);
+      let minutes = Math.round(milisecons/60000);
+      if(minutes < 60) return minutes + ' minutes';
+      else{
+        let hours = Math.floor(minutes/60);
+        let restMinutes = minutes - hours*60;
+        return hours + ' hours ' + restMinutes + ' minutes';
+      }
     }
-    let milisecons = Number(this.state.night.endDateOfNight) - Number(this.state.night.startDateOfNight);
-    let minutes = Math.round(milisecons/60000);
-    if(minutes < 60) return minutes + ' minutes';
-    else{
-      let hours = Math.floor(minutes/60);
-      let restMinutes = minutes - hours*60;
-      return hours + ' hours ' + restMinutes + ' minutes';
-    }
+    return '';
   }
 
   getREM(){
@@ -223,12 +226,13 @@ class Night extends React.Component{
           </Card>
         </Card>
         <br/>
+
         </div>
       );
     }
     else{
       return(
-        <div></div>
+        <div>123</div>
       )
     }   
   }

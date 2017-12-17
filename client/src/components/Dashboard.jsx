@@ -30,7 +30,6 @@ const Dashboard = ({
         <div className="button-line">
           
           <RaisedButton  
-          className="submitBtn" 
           backgroundColor="#ffb347"                  
           type="submit" 
           label={buttonText} 

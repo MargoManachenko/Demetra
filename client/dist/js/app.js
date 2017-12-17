@@ -40496,7 +40496,7 @@
 	      secretData: '',
 	      isNight: false,
 	      successMessage: '',
-	      userID: '5a2405c50ae9f865ec989471',
+	      userID: '5a369c368309260021d20c91',
 	      buttonText: ''
 	    };
 
@@ -40723,7 +40723,6 @@
 	        'div',
 	        { className: 'button-line' },
 	        _react2.default.createElement(_RaisedButton2.default, {
-	          className: 'submitBtn',
 	          backgroundColor: '#ffb347',
 	          type: 'submit',
 	          label: buttonText,
@@ -43553,7 +43552,7 @@
 
 	    // set the initial component state
 	    _this.state = {
-	      userID: '5a2405c50ae9f865ec989471',
+	      userID: '5a369c368309260021d20c91',
 	      errors: {},
 	      successMessage: successMessage,
 	      lightMode: '',
@@ -43570,7 +43569,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      var userID = '5a2405c50ae9f865ec989471';
+	      var userID = '5a369c368309260021d20c91';
 	      var formData = 'userID=' + userID;
 
 	      // create an AJAX request
@@ -45031,7 +45030,7 @@
 	    var _this = _possibleConstructorReturn(this, (NightPage.__proto__ || Object.getPrototypeOf(NightPage)).call(this, props));
 
 	    _this.state = {
-	      userID: '5a2405c50ae9f865ec989471',
+	      userID: '5a369c368309260021d20c91',
 	      errors: {},
 	      nightsList: [],
 	      nightsListExist: false
@@ -45044,7 +45043,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      var userID = '5a2405c50ae9f865ec989471';
+	      var userID = '5a369c368309260021d20c91';
 	      var formData = 'userID=' + userID;
 
 	      // create an AJAX request
@@ -45111,7 +45110,7 @@
 	          null,
 	          _react2.default.createElement(
 	            _Card.Card,
-	            { className: 'container' },
+	            { className: 'container', style: { backgroundColor: 'rgba(255,255,255,0.1)', color: 'white' } },
 	            _react2.default.createElement(_Card.CardTitle, {
 	              title: 'Sorry, no sleeps in your account',
 	              subtitle: 'Try to follow the instruction and start the sleep on your Dashboar' }),
@@ -45786,16 +45785,19 @@
 	    key: 'getFormatTime',
 	    value: function getFormatTime() {
 
-	      if (this.state.night.endDateOfNight == null) {
-	        return ' can not show. The night is not finished yet';
+	      if (this.state.nightIs) {
+	        if (this.state.night.endDateOfNight == null) {
+	          return ' can not show. The night is not finished yet';
+	        }
+	        var milisecons = Number(this.state.night.endDateOfNight) - Number(this.state.night.startDateOfNight);
+	        var minutes = Math.round(milisecons / 60000);
+	        if (minutes < 60) return minutes + ' minutes';else {
+	          var hours = Math.floor(minutes / 60);
+	          var restMinutes = minutes - hours * 60;
+	          return hours + ' hours ' + restMinutes + ' minutes';
+	        }
 	      }
-	      var milisecons = Number(this.state.night.endDateOfNight) - Number(this.state.night.startDateOfNight);
-	      var minutes = Math.round(milisecons / 60000);
-	      if (minutes < 60) return minutes + ' minutes';else {
-	        var hours = Math.floor(minutes / 60);
-	        var restMinutes = minutes - hours * 60;
-	        return hours + ' hours ' + restMinutes + ' minutes';
-	      }
+	      return '';
 	    }
 	  }, {
 	    key: 'getREM',
@@ -46023,7 +46025,11 @@
 	          _react2.default.createElement('br', null)
 	        );
 	      } else {
-	        return _react2.default.createElement('div', null);
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          '123'
+	        );
 	      }
 	    }
 	  }]);
