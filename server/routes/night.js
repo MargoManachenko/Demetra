@@ -23,36 +23,6 @@ router.post('/startNight', (req, res, next) => {
 	});	
 }); 
 
-router.post('/startPhase', (req, res, next) => {
-
-	const nightID = req.body.nightID;
-
-	Night.startPhase(nightID, (err) => {
-		if(err){
-			console.log(err); 
-	    	return err;
-		}
-	});	
-	return res.status(200).json({ 
-		successMessage: 'New phase is added'
-	});	
-}); 
-
-router.post('/endPhase', (req, res, next) => {
-
-	const nightID = req.body.nightID;
-
-	Night.endPhase(nightID, (err) => {
-		if(err){
-			console.log(err); 
-	    	return err;
-		}
-	});	
-	return res.status(200).json({ 
-		successMessage: 'The phase is closed'
-	});	
-}); 
-
 
 router.post('/endNight', (req, res, next) =>{
 
@@ -68,43 +38,6 @@ router.post('/endNight', (req, res, next) =>{
 		success:true,
 		successMessage: 'The sleep mode is OFF',
 		isNight: false
-	});
-});
-
-router.post('/isPhase', (req, res, next) =>{
-
-	const currentNightID = req.body.nightID;
-
-	var query = {_id : currentNightID};
-
-	Night.findOne({_id : currentNightID}, (err, night) =>{
-		if(err){
-			console.log(err);
-			return err;
-		}
-
-		if(night.phases.length == 0){
-			console.log(false + "=0");
-			return res.status(200).json({
-				isPhase: false
-			});
-		}
-
-	  	let lastPhase = night.phases[night.phases.length-1];
-
-	  	if(lastPhase.endTimeOfPhase == null){
-	  		console.log(true);
-	  		return res.status(200).json({
-				isPhase: true
-			});
-	  	}
-	  	if(lastPhase.endTimeOfPhase !== null){
-	  		console.log(false);
-	  		return res.status(200).json({
-				isPhase: false
-			});
-	  	}
-
 	});
 });
 
@@ -182,4 +115,107 @@ router.post('/deleteNight', (req, res, next) =>{
 		});
 	});
 });
+
+router.post('/startPhase', (req, res, next) => {
+
+	const nightID = req.body.nightID;
+
+	Night.startPhase(nightID, (err) => {
+		if(err){
+			console.log(err); 
+	    	return err;
+		}
+	});	
+	return res.status(200).json({ 
+		successMessage: 'New phase is added'
+	});	
+}); 
+
+router.post('/endPhase', (req, res, next) => {
+
+	const nightID = req.body.nightID;
+
+	Night.endPhase(nightID, (err) => {
+		if(err){
+			console.log(err); 
+	    	return err;
+		}
+	});	
+	return res.status(200).json({ 
+		successMessage: 'The phase is closed'
+	});	
+}); 
+
+//arduino
+router.post('/phase', (req, res, next) =>{
+
+	const currentUserID = req.query.userID;
+	console.log(currentUserID);
+	
+	let isNightCurrentUser;
+
+	Night.find({userID : currentUserID}, (err, nights) =>{
+		if(err){
+			console.log(err);
+			return err;
+		}
+
+		if(nights.length == 0){
+	  		return res.status(200).json({
+	  			successMessage: "turn on the sleep"
+	  		});
+	  	}	
+
+	  	let lastNight = nights[nights.length-1];
+	  	let nightID = lastNight._id;
+
+	  	let lastPhase;
+
+		if(lastNight.phases.length != 0){
+			lastPhase = lastNight.phases[lastNight.phases.length-1];
+
+			//phase is going
+			if(lastPhase.endTimeOfPhase == null){
+		  		console.log(true);		  		
+		  		Night.endPhase(nightID, (err) => {
+					if(err){
+						console.log(err); 
+						return err;
+					}
+				});	
+
+				return res.status(200).json({ 
+					successMessage: 'The phase is closed'
+				});	
+	  		}
+	  		//phase needs to be added
+	  		if(lastPhase.endTimeOfPhase !== null){
+		  		console.log(false);
+		  		Night.startPhase(nightID, (err) => {
+					if(err){
+						console.log(err); 
+				    	return err;
+					}
+				});	
+				return res.status(200).json({ 
+					successMessage: 'New phase is added'
+				});	
+	  		}
+	  	}
+	  	else{
+
+	  		Night.startPhase(nightID, (err) => {
+				if(err){
+					console.log(err); 
+				   	return err;
+				}
+			});	
+			return res.status(200).json({ 
+				successMessage: 'New phase is added to the emply list'
+			});	
+	  	}
+
+	});
+});
+
 module.exports = router;

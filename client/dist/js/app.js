@@ -45759,7 +45759,6 @@
 	    };
 
 	    _this.DeleteNight = _this.DeleteNight.bind(_this);
-	    _this.ProcessPhase = _this.ProcessPhase.bind(_this);
 	    return _this;
 	  }
 

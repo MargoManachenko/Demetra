@@ -23,7 +23,6 @@ class Night extends React.Component{
       };
 
       this.DeleteNight = this.DeleteNight.bind(this);
-      this.ProcessPhase = this.ProcessPhase.bind(this);
   }
 
   DeleteNight(event){
