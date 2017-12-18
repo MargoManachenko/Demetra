@@ -7,13 +7,13 @@ class DashboardPage extends React.Component {
 
   constructor(props) {
     super(props);
-
+    const userId = localStorage.getItem('userId');
 
     this.state = {
       secretData: '',
       isNight : false,
       successMessage: '',
-      userID: '5a369c368309260021d20c91',
+      userID: userId,
       buttonText: ''
     };
 
@@ -26,7 +26,6 @@ class DashboardPage extends React.Component {
     xhr.open('post', '/api/dashboard');
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
-    // set the authorization HTTP header
     xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
     xhr.responseType = 'json';
     xhr.addEventListener('load', () => {
@@ -38,8 +37,7 @@ class DashboardPage extends React.Component {
     });
     xhr.send();
 
-    const userID = this.state.userID; 
-    const formData = `userID=${userID}`;
+    const formData = `userID=${this.state.userID}`;
     const xhr2 = new XMLHttpRequest();
     xhr2.open('post', '/night/isNight');
     xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -66,8 +64,8 @@ class DashboardPage extends React.Component {
   }
 
   checkIsNight(){
-    const userID = this.state.userID; 
-    const formData = `userID=${userID}`;
+
+    const formData = `userID=${this.state.userID}`;
     xhr.open('post', '/night/isNight');
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       xhr.responseType = 'json';

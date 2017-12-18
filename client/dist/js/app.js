@@ -35033,8 +35033,9 @@
 	     *
 	     * @param {string} token
 	     */
-	    value: function authenticateUser(token) {
+	    value: function authenticateUser(token, userId) {
 	      localStorage.setItem('token', token);
+	      localStorage.setItem('userId', userId);
 	    }
 
 	    /**
@@ -35058,6 +35059,7 @@
 	    key: 'deauthenticateUser',
 	    value: function deauthenticateUser() {
 	      localStorage.removeItem('token');
+	      localStorage.removeItem('userId');
 	    }
 
 	    /**
@@ -40492,11 +40494,13 @@
 
 	    var _this = _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props));
 
+	    var userId = localStorage.getItem('userId');
+
 	    _this.state = {
 	      secretData: '',
 	      isNight: false,
 	      successMessage: '',
-	      userID: '5a369c368309260021d20c91',
+	      userID: userId,
 	      buttonText: ''
 	    };
 
@@ -40514,7 +40518,6 @@
 	      xhr.open('post', '/api/dashboard');
 	      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-	      // set the authorization HTTP header
 	      xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
 	      xhr.responseType = 'json';
 	      xhr.addEventListener('load', function () {
@@ -40526,8 +40529,7 @@
 	      });
 	      xhr.send();
 
-	      var userID = this.state.userID;
-	      var formData = 'userID=' + userID;
+	      var formData = 'userID=' + this.state.userID;
 	      var xhr2 = new XMLHttpRequest();
 	      xhr2.open('post', '/night/isNight');
 	      xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -40556,8 +40558,7 @@
 	    value: function checkIsNight() {
 	      var _this3 = this;
 
-	      var userID = this.state.userID;
-	      var formData = 'userID=' + userID;
+	      var formData = 'userID=' + this.state.userID;
 	      xhr.open('post', '/night/isNight');
 	      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	      xhr.responseType = 'json';
@@ -41525,7 +41526,7 @@
 	          });
 
 	          // save the token
-	          _Auth2.default.authenticateUser(xhr.response.token);
+	          _Auth2.default.authenticateUser(xhr.response.token, xhr.response.user.userID);
 
 	          // change the current URL to /
 	          _this2.context.router.replace('/');
@@ -43542,6 +43543,7 @@
 
 	    var _this = _possibleConstructorReturn(this, (SettingsPage.__proto__ || Object.getPrototypeOf(SettingsPage)).call(this, props, context));
 
+	    var userId = localStorage.getItem('userId');
 	    var storedMessage = localStorage.getItem('successMessage');
 	    var successMessage = '';
 
@@ -43552,7 +43554,7 @@
 
 	    // set the initial component state
 	    _this.state = {
-	      userID: '5a369c368309260021d20c91',
+	      userID: userId,
 	      errors: {},
 	      successMessage: successMessage,
 	      lightMode: '',
@@ -43569,8 +43571,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      var userID = '5a369c368309260021d20c91';
-	      var formData = 'userID=' + userID;
+	      var formData = 'userID=' + this.state.userID;
 
 	      // create an AJAX request
 	      var xhr = new XMLHttpRequest();
@@ -45026,11 +45027,13 @@
 	  function NightPage(props, context) {
 	    _classCallCheck(this, NightPage);
 
-	    // set the initial component state
 	    var _this = _possibleConstructorReturn(this, (NightPage.__proto__ || Object.getPrototypeOf(NightPage)).call(this, props));
 
+	    var userId = localStorage.getItem('userId');
+	    console.log();
+	    // set the initial component state
 	    _this.state = {
-	      userID: '5a369c368309260021d20c91',
+	      userID: userId,
 	      errors: {},
 	      nightsList: [],
 	      nightsListExist: false
@@ -45043,8 +45046,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      var userID = '5a369c368309260021d20c91';
-	      var formData = 'userID=' + userID;
+	      var formData = 'userID=' + this.state.userID;
 
 	      // create an AJAX request
 	      var xhr = new XMLHttpRequest();

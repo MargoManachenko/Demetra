@@ -8,10 +8,11 @@ class NightPage extends React.Component {
 
   constructor(props, context) {
     super(props);
-
+    const userId = localStorage.getItem('userId');
+    console.log();
     // set the initial component state
     this.state = {
-      userID: '5a369c368309260021d20c91',
+      userID: userId,
       errors: {},
       nightsList: [],
       nightsListExist: false
@@ -20,8 +21,7 @@ class NightPage extends React.Component {
 
   componentDidMount() {  
 
-      const userID = '5a369c368309260021d20c91'; 
-      const formData = `userID=${userID}`;
+      const formData = `userID=${this.state.userID}`;
       
       // create an AJAX request
       const xhr = new XMLHttpRequest();
