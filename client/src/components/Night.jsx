@@ -17,11 +17,13 @@ class Night extends React.Component{
         phases: this.props.phases,
         errors:{},    
         successMessage: '',  
+        isPhase: false,
         nightIs: this.props.nightIs,
         data2 : []
       };
 
       this.DeleteNight = this.DeleteNight.bind(this);
+      this.ProcessPhase = this.ProcessPhase.bind(this);
   }
 
   DeleteNight(event){
@@ -145,6 +147,7 @@ class Night extends React.Component{
     return phaseInfo;
   }
 
+
   render(){
     if(this.state.nightIs){           
 
@@ -212,6 +215,7 @@ class Night extends React.Component{
           />            
           <CardActions>
             <RaisedButton backgroundColor="#ffb347" label="Delete" onClick={this.DeleteNight}/>
+
           </CardActions>  
 
           <div className="deleteNightMessage">

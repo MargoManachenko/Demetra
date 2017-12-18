@@ -45753,11 +45753,13 @@
 	      phases: _this.props.phases,
 	      errors: {},
 	      successMessage: '',
+	      isPhase: false,
 	      nightIs: _this.props.nightIs,
 	      data2: []
 	    };
 
 	    _this.DeleteNight = _this.DeleteNight.bind(_this);
+	    _this.ProcessPhase = _this.ProcessPhase.bind(_this);
 	    return _this;
 	  }
 

@@ -11,7 +11,6 @@ router.post('/startNight', (req, res, next) => {
 	const userID = req.body.userID;
 	Night.startNight(userID, (err) => {
 		if(err){
-			console.log('err');
 			console.log(err); 
 	    	return err;
 		}
@@ -23,6 +22,37 @@ router.post('/startNight', (req, res, next) => {
 		isNight: true
 	});	
 }); 
+
+router.post('/startPhase', (req, res, next) => {
+
+	const nightID = req.body.nightID;
+
+	Night.startPhase(nightID, (err) => {
+		if(err){
+			console.log(err); 
+	    	return err;
+		}
+	});	
+	return res.status(200).json({ 
+		successMessage: 'New phase is added'
+	});	
+}); 
+
+router.post('/endPhase', (req, res, next) => {
+
+	const nightID = req.body.nightID;
+
+	Night.endPhase(nightID, (err) => {
+		if(err){
+			console.log(err); 
+	    	return err;
+		}
+	});	
+	return res.status(200).json({ 
+		successMessage: 'The phase is closed'
+	});	
+}); 
+
 
 router.post('/endNight', (req, res, next) =>{
 
@@ -41,18 +71,53 @@ router.post('/endNight', (req, res, next) =>{
 	});
 });
 
+router.post('/isPhase', (req, res, next) =>{
+
+	const currentNightID = req.body.nightID;
+
+	var query = {_id : currentNightID};
+
+	Night.findOne({_id : currentNightID}, (err, night) =>{
+		if(err){
+			console.log(err);
+			return err;
+		}
+
+		if(night.phases.length == 0){
+			console.log(false + "=0");
+			return res.status(200).json({
+				isPhase: false
+			});
+		}
+
+	  	let lastPhase = night.phases[night.phases.length-1];
+
+	  	if(lastPhase.endTimeOfPhase == null){
+	  		console.log(true);
+	  		return res.status(200).json({
+				isPhase: true
+			});
+	  	}
+	  	if(lastPhase.endTimeOfPhase !== null){
+	  		console.log(false);
+	  		return res.status(200).json({
+				isPhase: false
+			});
+	  	}
+
+	});
+});
+
 router.post('/isNight', (req, res, next) =>{
 
 	const currentUserID = req.body.userID;
 	let isNightCurrentUser;
-	console.log(currentUserID);
+
 	Night.find({userID : currentUserID}, function(err, nights) {
 	  	if(err){
 	  		console.log(err);
 	  		return err;
-	  	}
-
-	  	console.log(nights);	  
+	  	}  
 
 	  	if(nights.length == 0){
 	  		isNightCurrentUser = false;
@@ -61,6 +126,7 @@ router.post('/isNight', (req, res, next) =>{
 	  		});
 	  	}	
 	  	let lastNight = nights[nights.length-1];
+
 		if(lastNight.endDateOfNight == null){	      
 			isNightCurrentUser = true;
 			return res.status(200).json({
@@ -74,10 +140,6 @@ router.post('/isNight', (req, res, next) =>{
 	  		});
 		}
 	});
-
-	// return res.status(200).json({
-	// 	isNight: isNightCurrentUser
-	// });
 });
 
 router.post('/getAllNights', (req, res, next) =>{
@@ -96,8 +158,6 @@ router.post('/getAllNights', (req, res, next) =>{
 		}
 		else
 		{	
-			console.log('output result');
-			console.log(nights);
 			return res.status(200).json({
 				nightsList: nights,
 				nightsListExist: true

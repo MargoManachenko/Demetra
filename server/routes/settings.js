@@ -10,6 +10,9 @@ router.post('/settings', (req, res, next) => {
 	const newLightTime = req.body.lightTime;
 	const userID = req.body.userID;
 
+	if(newLightMode == null) newLightMode = 'medium';
+	if(newLightTime == null) newLightTime = '10';
+
 	User.findOneAndUpdate({_id: userID}, { $set:{lightMode : newLightMode, lightTime : newLightTime}}, function(err, res){
 		if(err) {
 			console.log(err);
