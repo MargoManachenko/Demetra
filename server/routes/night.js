@@ -101,6 +101,31 @@ router.post('/getAllNights', (req, res, next) =>{
 	});
 });
 
+router.post('/getAllNightsUwp', (req, res, next) =>{
+
+	const currentUserID = req.body.userID;
+
+	Night.find({userID: currentUserID}, (err, nights) => {
+		if(err) {
+		console.log(err);
+		return err;
+		}
+		if(nights.length == 0){
+			return res.status(400).json({
+				nightsListExist: false
+			});
+		}
+		else
+		{	
+			return res.status(200).json({
+				nightsList: nights
+			});
+			
+		}
+
+	});
+});
+
 router.post('/deleteNight', (req, res, next) =>{
 
 	const currentNightID = req.body.nightID;
@@ -146,7 +171,9 @@ router.post('/endPhase', (req, res, next) => {
 	});	
 }); 
 
-//arduino
+//
+//for Arduino
+//
 router.post('/phase', (req, res, next) =>{
 
 	const currentUserID = req.query.userID;
