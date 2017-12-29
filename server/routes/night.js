@@ -172,52 +172,52 @@ router.post('/endPhase', (req, res, next) => {
 }); 
 
 //
-//for Arduino
+//for esp
 //
 router.post('/phase', (req, res, next) =>{
 
-	const currentUserID = req.query.userID;
-	console.log(currentUserID);
-	
-	let isNightCurrentUser;
+	// const currentUserID = req.query.userID;
+	// console.log(currentUserID);
 
-	Night.find({userID : currentUserID}, (err, nights) =>{
-		if(err){
-			console.log(err);
-			return err;
-		}
+	// Night.find({userID : currentUserID}, (err, nights) =>{
+	// 	if(err){
+	// 		console.log(err);
+	// 		return err;
+	// 	}
 
-		if(nights.length == 0){
-	  		return res.status(200).json({
-	  			successMessage: "turn on the sleep"
-	  		});
-	  	}	
+	// 	if(nights.length == 0){
+	//   		return res.status(200).json({
+	//   			id: currentUserID,
+	//   			successMessage: "turn on the sleep"
+	//   		});
+	//   	}	
 
-	  	let lastNight = nights[nights.length-1];
-	  	let nightID = lastNight._id;
+	  	// let lastNight = nights[nights.length-1];
+	  	// let nightID = lastNight._id;
+	  	let nightID = "5a4695d944a7080021938673";
 
 	  	let lastPhase;
 
-		if(lastNight.phases.length != 0){
-			lastPhase = lastNight.phases[lastNight.phases.length-1];
+		// if(lastNight.phases.length != 0){
+		// 	lastPhase = lastNight.phases[lastNight.phases.length-1];
 
-			//phase is going
-			if(lastPhase.endTimeOfPhase == null){
-		  		console.log(true);		  		
-		  		Night.endPhase(nightID, (err) => {
-					if(err){
-						console.log(err); 
-						return err;
-					}
-				});	
+		// 	//phase is going
+		// 	if(lastPhase.endTimeOfPhase == null){
+		//   		console.log(true);		  		
+		//   		Night.endPhase(nightID, (err) => {
+		// 			if(err){
+		// 				console.log(err); 
+		// 				return err;
+		// 			}
+		// 		});	
 
-				return res.status(200).json({ 
-					successMessage: 'The phase is closed'
-				});	
-	  		}
-	  		//phase needs to be added
-	  		if(lastPhase.endTimeOfPhase !== null){
-		  		console.log(false);
+		// 		return res.status(200).json({ 
+		// 			successMessage: 'The phase is closed'
+		// 		});	
+	 //  		}
+	  		// //phase needs to be added
+	  		// if(lastPhase.endTimeOfPhase !== null){
+		  	// 	console.log(false);
 		  		Night.startPhase(nightID, (err) => {
 					if(err){
 						console.log(err); 
@@ -227,22 +227,23 @@ router.post('/phase', (req, res, next) =>{
 				return res.status(200).json({ 
 					successMessage: 'New phase is added'
 				});	
-	  		}
-	  	}
-	  	else{
+	  		//}
+	  	//}
+	  // 	else{
 
-	  		Night.startPhase(nightID, (err) => {
-				if(err){
-					console.log(err); 
-				   	return err;
-				}
-			});	
-			return res.status(200).json({ 
-				successMessage: 'New phase is added to the emply list'
-			});	
-	  	}
+	  // 		Night.startPhase(nightID, (err) => {
+			// 	if(err){
+			// 		console.log(err); 
+			// 	   	return err;
+			// 	}
+			// });	
+			// return res.status(200).json({ 
+			// 	successMessage: 'New phase is added to the emply list'
+			// });	
+	  // 	}
 
-	});
+	//});
+};
 });
 
 module.exports = router;
