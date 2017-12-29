@@ -176,6 +176,23 @@ router.post('/endPhase', (req, res, next) => {
 //
 router.post('/phase', (req, res, next) =>{
 
+
+let nightID = "5a4695d944a7080021938673";
+
+let lastPhase;
+
+Night.startPhase(nightID, (err) => {
+		if(err){
+			console.log(err); 
+	    	return err;
+		}
+	});	
+	return res.status(200).json({ 
+		successMessage: 'New phase is added'
+	});	
+});
+
+
 	// const currentUserID = req.query.userID;
 	// console.log(currentUserID);
 
@@ -193,10 +210,10 @@ router.post('/phase', (req, res, next) =>{
 	//   	}	
 
 	  	// let lastNight = nights[nights.length-1];
-	  	// let nightID = lastNight._id;
-	  	let nightID = "5a4695d944a7080021938673";
+	  	// // let nightID = lastNight._id;
+	  	// let nightID = "5a4695d944a7080021938673";
 
-	  	let lastPhase;
+	  	// let lastPhase;
 
 		// if(lastNight.phases.length != 0){
 		// 	lastPhase = lastNight.phases[lastNight.phases.length-1];
@@ -218,15 +235,15 @@ router.post('/phase', (req, res, next) =>{
 	  		// //phase needs to be added
 	  		// if(lastPhase.endTimeOfPhase !== null){
 		  	// 	console.log(false);
-		  		Night.startPhase(nightID, (err) => {
-					if(err){
-						console.log(err); 
-				    	return err;
-					}
-				});	
-				return res.status(200).json({ 
-					successMessage: 'New phase is added'
-				});	
+		  // 		Night.startPhase(nightID, (err) => {
+				// 	if(err){
+				// 		console.log(err); 
+				//     	return err;
+				// 	}
+				// });	
+				// return res.status(200).json({ 
+				// 	successMessage: 'New phase is added'
+				// });	
 	  		//}
 	  	//}
 	  // 	else{
@@ -243,7 +260,6 @@ router.post('/phase', (req, res, next) =>{
 	  // 	}
 
 	//});
-};
-});
+
 
 module.exports = router;
