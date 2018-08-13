@@ -15,8 +15,12 @@ module.exports = new PassportLocalStrategy({
     email: email.trim(),
     password: password.trim(),
     name: req.body.name.trim(),
-    lightMode: 'medium',
-    lightTime: '10'
+    phone: req.body.phone.trim(),
+    country: req.body.country.trim(),
+    city:  req.body.city.trim(),
+    street:  req.body.street.trim(),
+    house:  req.body.house.trim(),
+    flat:  req.body.flat.trim()
   };
 
   const newUser = new User(userData);

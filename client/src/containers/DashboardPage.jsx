@@ -1,146 +1,185 @@
-import React from 'react';
 import Auth from '../modules/Auth';
-import Dashboard from '../components/Dashboard.jsx';
-
+import React, {PropTypes} from 'react';
+import AddCropDialog from "../components/AddCropDialog.jsx";
+import UserCropDetails from "../components/UserCropDetails.jsx";
 
 class DashboardPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-    const userId = localStorage.getItem('userId');
+    constructor(props) {
+        super(props);
+        const userId = localStorage.getItem('userId');
 
-    this.state = {
-      secretData: '',
-      isNight : false,
-      successMessage: '',
-      userID: userId,
-      buttonText: ''
+        this.state = {
+            secretData: '',
+            successMessage: '',
+            userID: userId,
+            open: false,
+            indicatorsId: '',
+            cropName: '',
+            message: '',
+            error: '',
+            cropList: []
+        };
+
+        this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
+        this.onChangeCropName = this.onChangeCropName.bind(this);
+        this.onChangeIndicatorId = this.onChangeIndicatorId.bind(this);
+        this.SubmitForm = this.SubmitForm.bind(this);
+    }
+
+
+    componentDidMount() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', '/api/dashboard');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+                this.setState({
+                    secretData: xhr.response.message
+                });
+            }
+        });
+        xhr.send();
+
+        const xhr2 = new XMLHttpRequest();
+        const userId = this.state.userID;
+        const formData = `userId=${userId}`;
+        xhr2.open('post', '/crop/getAllCrop');
+        xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr2.responseType = 'json';
+        xhr2.addEventListener('load', () => {
+            if (xhr2.status === 200) {
+                this.setState({
+                    cropList: xhr2.response.cropList
+                });
+            }
+        });
+        xhr2.send(formData);
+
+    }
+
+    handleOpen() {
+        this.setState({open: true});
+    }
+
+    handleClose() {
+        this.setState({open: false});
+    }
+
+    onChangeIndicatorId(event) {
+        const newIndicatorsId = event.target.value;
+        this.setState({
+            indicatorsId: newIndicatorsId
+        });
+    }
+
+    onChangeCropName(searchText) {
+        this.setState({
+            cropName: searchText
+        });
     };
 
-     this.startNight = this.startNight.bind(this);
-     this.changeButtonText = this.changeButtonText.bind(this);
-  }
+    SubmitForm(event) {
+        event.preventDefault();
 
-  componentDidMount() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', '/api/dashboard');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    
-    xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
-        this.setState({
-          secretData: xhr.response.message
+        const userID = this.state.userID;
+        const cropName = this.state.cropName;
+        const indicatorsId = this.state.indicatorsId;
+
+        const formData = `userId=${userID}&cropName=${cropName}&indicatorsId=${indicatorsId}`;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', '/crop/addCrop');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+                this.setState({
+                    message: xhr.response.message,
+                    error: xhr.response.error,
+                    open: false
+                });
+                this.context.router.replace('/');
+            }
         });
-      }    
-    });
-    xhr.send();
+        xhr.send(formData);
+    }
 
-    const formData = `userID=${this.state.userID}`;
-    const xhr2 = new XMLHttpRequest();
-    xhr2.open('post', '/night/isNight');
-    xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr2.responseType = 'json';
-    xhr2.addEventListener('load', () => {
-      if (xhr2.status === 200) {  
-        this.setState({
-          isNight: xhr2.response.isNight,
-        });      
+    render() {
+        let cropListToRender = [];
+        if (this.state.cropList.length !== 0) {
+            for (let i = 0; i < this.state.cropList.length; i++) {
+                cropListToRender.push(
+                    <UserCropDetails
+                        key={i}
+                        cropId={this.state.cropList[i]._id}
+                        cropName={this.state.cropList[i].cropName}
+                        indicatorsId={this.state.cropList[i].indicatorsId}
+                        normalTemperature={this.state.cropList[i].normalTemperature}
+                        normalHumidity={this.state.cropList[i].normalHumidity}
+                        seedsPricePerKg={this.state.cropList[i].seedsPricePerKg}
+                        cropPricePerKg={this.state.cropList[i].cropPricePerKg}
+                        maturationTimeInMonths={this.state.cropList[i].maturationTimeInMonths}
+                        currentTemperature={this.state.cropList[i].currentTemperature}
+                        currentHumidity={this.state.cropList[i].currentHumidity}
+                        harvestingDate={this.state.cropList[i].harvestingDate}
+                        harvestingAmount={this.state.cropList[i].harvestingAmount}
+                        sowingDate={this.state.cropList[i].sowingDate}
+                        sowingAmount={this.state.cropList[i].sowingAmount}
+                        payed={this.state.cropList[i].payed}
+                    />
+                );
+            }
+            return (
+                <div>
+                    {this.state.error && <p className="error-message">{this.state.error}</p>}
+                    {this.state.message && <p className="success-message">{this.state.message}</p>}
+                    <AddCropDialog
+                        onClose={this.handleClose}
+                        OpenDialog={this.handleOpen}
+                        open={this.state.open}
+                        onChangeCropName={this.onChangeCropName}
+                        onChangeIndicatorId={this.onChangeIndicatorId}
+                        SubmitForm={this.SubmitForm}
+                    />
+                    <div className="containerForNight">
+                        {cropListToRender}
+                    </div>
+                </div>
 
-        if(this.state.isNight == false){
-          this.setState({
-            buttonText: 'Start sleep',
-          });    
-        }  
-        else{
-          this.setState({
-            buttonText: 'End sleep',
-          });
-        }    
-      }
-    });
-    xhr2.send(formData);
-  }
-
-  checkIsNight(){
-
-    const formData = `userID=${this.state.userID}`;
-    xhr.open('post', '/night/isNight');
-      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-      xhr.responseType = 'json';
-
-      xhr.addEventListener('load', () => {
-
-        if (xhr.status === 200) {        
-          this.setState({
-            isNight: xhr.response.isNight
-          });       
+            );
         }
-      });
-    xhr.send(formData);
-  }
+        else {
+            return (
+                <div>
+                    <div className="homeBlockHeadingBig">
+                        {this.state.error && <p className="error-message">{this.state.error}</p>}
+                        {this.state.message && <p className="success-message">{this.state.message}</p>}
 
-  startNight(event){
-    event.preventDefault();
-    const formData = `userID=${this.state.userID}`;
+                        <p style={{color: 'white'}}>You don't have any crop added. Start now.</p>
+                    </div>
 
-    // create an AJAX request  
-    var request;  
-    if(this.state.isNight === false){
-      console.log('request to start');
-      request = 'startNight';
+                    <AddCropDialog
+                        onClose={this.handleClose}
+                        OpenDialog={this.handleOpen}
+                        open={this.state.open}
+                        onChangeCropName={this.onChangeCropName}
+                        onChangeIndicatorId={this.onChangeIndicatorId}
+                        SubmitForm={this.SubmitForm}
+                    />
+
+                </div>
+            );
+        }
     }
-    else{
-      console.log('request to end');
-      request = 'endNight';
-    }    
+}
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', '/night/'+ request);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
-          this.setState({
-            success: xhr.response.success,
-            isNight: xhr.response.isNight,
-            successMessage: xhr.response.successMessage
-        });
-      } else {
-        console.log('error from dashboard');
-      }
-    });
-    xhr.send(formData);
-  }
-
-  changeButtonText(){
-    let currentText = this.state.buttonText;
-    if(currentText.localeCompare('End sleep') == 0){
-       this.setState({
-        buttonText : 'Start sleep'
-      });
-    }
-    if(currentText.localeCompare('Start sleep') == 0){
-       this.setState({
-        buttonText : 'End sleep'
-      });
-    }     
-  }
-
-  render() {
-    return (
-      <Dashboard 
-        onSubmit={this.startNight}
-        secretData={this.state.secretData}
-        successMessage={this.state.successMessage}
-        isNight={this.state.isNight}
-        userID={this.state.userID}        
-        onClick={this.changeButtonText}
-        buttonText={this.state.buttonText}
-      />
-    );
-  }
-} 
+DashboardPage.contextTypes = {
+    router: PropTypes.object.isRequired
+};
 
 export default DashboardPage;

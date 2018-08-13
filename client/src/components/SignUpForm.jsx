@@ -1,79 +1,135 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Card, CardText } from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import React , { PropTypes }from 'react';
 import TextField from 'material-ui/TextField';
+import {Card, CardText} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import {Link} from 'react-router';
 
 const styles = {
-  floatingLabelStyle: {
-    color: 'white'
-  }
+    floatingLabelStyle: {
+        color: 'white'
+    }
 };
 
 const SignUpForm = ({
-  onSubmit,
-  onChange,
-  errors,
-  user,
+    errors,
+    onChange,
+    onSubmit,
+    user
 }) => (
-  <Card className="container" style={{backgroundColor: 'rgba(255,255,255,0.1)', color: 'white'}}>
+    <Card className="containerSignUp" style={{backgroundColor: 'rgba(255,255,255,0.1)', color: 'white'}}>
     <form className="form" action="/" onSubmit={onSubmit}>
-      <h2 className="card-heading">Sign Up</h2>
 
-      {errors.summary && <p className="error-message">{errors.summary}</p>}
+        <h2 className="card-heading">Sign up</h2>
 
-      <div className="field-line">
+        {errors.summary && <p className="error-message">{errors.summary}</p>}
+
         <TextField
-          floatingLabelText="Name"
-          floatingLabelStyle={styles.floatingLabelStyle}
-          name="name"
-          errorText={errors.name}
-          onChange={onChange}
-          value={user.name}
-          autoComplete='off'
+            floatingLabelText="Name"
+            name="name"
+            errorText={errors.name}
+            onChange={onChange}
+            value={user.name}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
         />
-      </div>
 
-      <div className="field-line">
         <TextField
-          floatingLabelText="Email"
-          floatingLabelStyle={styles.floatingLabelStyle}
-          name="email"
-          errorText={errors.email}
-          onChange={onChange}
-          value={user.email}
-          autoComplete='off'
+            floatingLabelText="Email"
+            name="email"
+            errorText={errors.email}
+            onChange={onChange}
+            value={user.email}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
         />
-      </div>
-
-      <div className="field-line">
         <TextField
-          floatingLabelText="Password"
-          floatingLabelStyle={styles.floatingLabelStyle}
-          type="password"
-          name="password"
-          onChange={onChange}
-          errorText={errors.password}
-          value={user.password}
-          autoComplete='off'
+            floatingLabelText="Password"
+            name="password"
+            type="password"
+            errorText={errors.password}
+            onChange={onChange}
+            value={user.password}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
         />
-      </div>
+        <TextField
+            floatingLabelText="Phone"
+            name="phone"
+            errorText={errors.phone}
+            onChange={onChange}
+            value={user.phone}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
+        <TextField
+            floatingLabelText="Country"
+            name="country"
+            errorText={errors.country}
+            onChange={onChange}
+            value={user.country}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
+        <TextField
+            floatingLabelText="City"
+            name="city"
+            errorText={errors.city}
+            onChange={onChange}
+            value={user.city}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
+        <TextField
+            floatingLabelText="Street"
+            name="street"
+            errorText={errors.street}
+            onChange={onChange}
+            value={user.street}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
+        <TextField
+            floatingLabelText="House"
+            name="house"
+            errorText={errors.house}
+            onChange={onChange}
+            value={user.house}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
+        <TextField
+            floatingLabelText="Flat"
+            name="flat"
+            errorText={errors.flat}
+            onChange={onChange}
+            value={user.flat}
+            autoComplete='off'
+            floatingLabelStyle={styles.floatingLabelStyle}
+            inputStyle={styles.floatingLabelStyle}
+        />
 
-      <div className="button-line">
-        <RaisedButton backgroundColor="#ffb347" type="submit" label="Create New Account" />
-      </div>
+        <div className="button-line">
+            <RaisedButton backgroundColor="#ffb347" type="submit" label="Create new account"/>
+        </div>
 
-      <CardText>Already have an account? <Link to={'/login'}>Log in</Link></CardText>
+        <CardText style={{color: 'white'}}>Already have an account? <Link to={'/login'}>Log in</Link></CardText>
     </form>
-  </Card>
+    </Card>
 );
 
 SignUpForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+    onChange: PropTypes.func.isRequired,
+    onSubmit:PropTypes.func.isRequired,
+    errors: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired
 };
 
 export default SignUpForm;
-

@@ -1,40 +1,31 @@
-import React, { PropTypes } from 'react';
-import { Link, IndexLink } from 'react-router';
+import React, {PropTypes} from 'react';
+import {Link} from 'react-router';
 import Auth from '../modules/Auth';
 
-const Base = ({ children }) => (
-  <div>
-    <div className="top-bar">
-      <div className="top-bar-left">
-          
-        <IndexLink to="/">
-        <img src="static/logoGD.png"/>
-        </IndexLink>
-      </div>
+const Base = ({children}) => (
+    <div>
 
-      {Auth.isUserAuthenticated() ? (
-        <div className="top-bar-right">
-        <Link to="/sleeps">My sleeps</Link>         
-          <Link to="/settings">Settings</Link> 
-          <Link to="/logout">Log out</Link>
+        <div className="top-bar">
+            {Auth.isUserAuthenticated() ? (
+                <div className="top-bar-right">
+                    <Link to="/logout">Log out</Link>
+                </div>
+            ) : (
+                <div className="top-bar-right">
+                    <Link to="/login">Log in</Link>
+                    <Link to="/signup">Sign up</Link>
+                </div>
+            )}
+
         </div>
-      ) : (
-        <div className="top-bar-right">
-          <Link to="/login">Log in</Link>
-          <Link to="/signup">Sign up</Link>
-        </div>
-      )}
+
+        {children}
 
     </div>
-
-    { /* child component will be rendered here */ }
-    {children}
-
-  </div>
 );
 
 Base.propTypes = {
-  children: PropTypes.object.isRequired
+    children: PropTypes.object.isRequired
 };
 
 export default Base;

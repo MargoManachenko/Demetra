@@ -1,110 +1,96 @@
-import React, { PropTypes } from 'react';
-import SignUpForm from '../components/SignUpForm.jsx';
+import React, {PropTypes} from 'react';
+import SignUpForm from '../components/SignUpForm.jsx'
 
 
 class SignUpPage extends React.Component {
 
-  /**
-   * Class constructor.
-   */
-  constructor(props, context) {
-    super(props, context);
+    constructor(props, context) {
+        super(props, context);
 
-    // set the initial component state
-    this.state = {
-      errors: {},
-      user: {
-        email: '',
-        name: '',
-        password: ''
-      }
+        this.state = {
+            errors: {},
+            user: {
+                email: '',
+                name: '',
+                password: '',
+                phone: '',
+                country: '',
+                city: '',
+                street: '',
+                house: '',
+                flat: ''
+            }
+        };
+
+        this.ProcessForm = this.ProcessForm.bind(this);
+        this.ChangeUser = this.ChangeUser.bind(this);
+    }
+
+
+    ProcessForm(event) {
+        event.preventDefault();
+
+        const name = encodeURIComponent(this.state.user.name);
+        const email = encodeURIComponent(this.state.user.email);
+        const password = encodeURIComponent(this.state.user.password);
+        const phone = encodeURIComponent(this.state.user.phone);
+        const country = encodeURIComponent(this.state.user.country);
+        const city = encodeURIComponent(this.state.user.city);
+        const street = encodeURIComponent(this.state.user.street);
+        const house = encodeURIComponent(this.state.user.house);
+        const flat = encodeURIComponent(this.state.user.flat);
+
+        const formData = `name=${name}&email=${email}&password=${password}&phone=${phone}&country=${country}&city=${city}&street=${street}&house=${house}&flat=${flat}`
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', '/auth/signup');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+                this.setState({
+                    errors: {}
+                });
+
+                localStorage.setItem('successMessage', xhr.response.message);
+                this.context.router.replace('/login');
+            } else {
+                const errors = xhr.response.errors ? xhr.response.errors : {};
+                errors.summary = xhr.response.message;
+
+                this.setState({
+                    errors
+                });
+            }
+        });
+        xhr.send(formData);
+    }
+
+
+    ChangeUser(event) {
+        const field = event.target.name;
+        const user = this.state.user;
+        user[field] = event.target.value;
+
+        this.setState({
+            user
+        });
+    }
+
+    render() {
+        return (
+            <SignUpForm
+                onChange={this.ChangeUser}
+                onSubmit={this.ProcessForm}
+                errors={this.state.errors}
+                user={this.state.user}
+            />
+        )
     };
-
-    this.processForm = this.processForm.bind(this);
-    this.changeUser = this.changeUser.bind(this);
-  }
-
-  /**
-   * Process the form.
-   *
-   * @param {object} event - the JavaScript event object
-   */
-  processForm(event) {
-    // prevent default action. in this case, action is the form submission event
-    event.preventDefault();
-
-    // create a string for an HTTP body message
-    const name = encodeURIComponent(this.state.user.name);
-    const email = encodeURIComponent(this.state.user.email);
-    const password = encodeURIComponent(this.state.user.password);
-    const formData = `name=${name}&email=${email}&password=${password}`;
-
-    // create an AJAX request
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', '/auth/signup');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
-        // success
-
-        // change the component-container state
-        this.setState({
-          errors: {}
-        });
-
-        // set a message
-        localStorage.setItem('successMessage', xhr.response.message);
-
-        // make a redirect
-        this.context.router.replace('/login');
-      } else {
-        // failure
-
-        const errors = xhr.response.errors ? xhr.response.errors : {};
-        errors.summary = xhr.response.message;
-
-        this.setState({
-          errors
-        });
-      }
-    });
-    xhr.send(formData);
-  }
-
-  /**
-   * Change the user object.
-   *
-   * @param {object} event - the JavaScript event object
-   */
-  changeUser(event) {
-    const field = event.target.name;
-    const user = this.state.user;
-    user[field] = event.target.value;
-
-    this.setState({
-      user
-    });
-  }
-
-  /**
-   * Render the component.
-   */
-  render() {
-    return (
-      <SignUpForm
-        onSubmit={this.processForm}
-        onChange={this.changeUser}
-        errors={this.state.errors}
-        user={this.state.user}
-      />
-    );
-  }
-
 }
 
 SignUpPage.contextTypes = {
-  router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
 };
 
 export default SignUpPage;
