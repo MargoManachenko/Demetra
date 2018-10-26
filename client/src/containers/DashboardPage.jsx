@@ -83,14 +83,16 @@ class DashboardPage extends React.Component {
         });
     };
 
+
     SubmitForm(event){
         event.preventDefault();
 
         const userID = this.state.userID;
         const cropName = this.state.cropName;
-        const indicatorsId = this.state.indicatorsId;
+        // const indicatorsId = this.state.indicatorsId;
 
-        const formData = `userId=${userID}&cropName=${cropName}&indicatorsId=${indicatorsId}`;
+        const formData = `userId=${userID}&cropName=${cropName}&indicatorsId=$45`;
+        // const formData = `userId=${userID}&cropName=${cropName}`;
 
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/crop/addCrop');
@@ -103,7 +105,8 @@ class DashboardPage extends React.Component {
                     error: xhr.response.error,
                     open: false
                 });
-                this.context.router.replace('/');
+                console.log(this.state);
+                this.router.replace('/');
             }
         });
         xhr.send(formData);
@@ -145,7 +148,7 @@ class DashboardPage extends React.Component {
                       OpenDialog={this.handleOpen}
                       open={this.state.open}
                       onChangeCropName={this.onChangeCropName}
-                      onChangeIndicatorId={this.onChangeIndicatorId}
+                      // onChangeIndicatorId={this.onChangeIndicatorId}
                       SubmitForm={this.SubmitForm}
                   />
                   <div className="containerForNight">

@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-size: 16px;
-  background: url(./field.jpg) no-repeat center center fixed;
+  background: url(./greenField.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -202,7 +202,6 @@ p{
   text-align: center;
   font-size: 43px;
   line-height: 44px;
-  margin: -1px;
 }
 
 .homeBlock2{

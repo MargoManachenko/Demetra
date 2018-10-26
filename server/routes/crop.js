@@ -53,9 +53,27 @@ router.post('/getAllCrop', (req,res) => {
 });
 
 router.post('/addCrop', (req,res) =>{
+    console.log(5555);
     const userId = req.body.userId;
     const cropName = req.body.cropName;
-    const indicatorsId = req.body.indicatorsId;
+    // const indicatorsId = req.body.indicatorsId;
+
+    // let crop1 = new CropConstants({
+    //     name:  "Kamut",
+    //     normalTemperature: "25",
+    //     normalHumidity: "20",
+    //     seedsPricePerKg: "40",
+    //     cropPricePerKg: "30",
+    //     maturationTimeInMonths: "1"
+    // });
+    // crop1.save();
+    // crop1.save((err) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     else
+    //         console.log('good');
+    // });
 
     let query = {name : cropName};
     CropConstants.findOne(query, (err, crop) => {
@@ -69,7 +87,7 @@ router.post('/addCrop', (req,res) =>{
                 clientId: userId,
                 cropConstantsId: crop._id,
                 cropName: cropName,
-                indicatorsId: indicatorsId,
+                // indicatorsId: indicatorsId,
                 normalTemperature: crop.normalTemperature,
                 normalHumidity: crop.normalHumidity,
                 seedsPricePerKg: crop.seedsPricePerKg,
@@ -94,6 +112,9 @@ router.post('/addCrop', (req,res) =>{
             });
         }
     });
+
+
+
     // Crop.AddCrop(userId, cropName, indicatorsId, (err) =>{
     //     if(err){
     //         return res.status(201).json({

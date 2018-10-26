@@ -12,13 +12,13 @@ class SignUpPage extends React.Component {
             user:{
                 email: '',
                 name: '',
-                password: '',
-                phone: '',
-                country: '',
-                city: '',
-                street: '',
-                house: '',
-                flat: ''
+                password: ''
+                // phone: '',
+                // country: '',
+                // city: '',
+                // street: '',
+                // house: '',
+                // flat: ''
             }
         };
 
@@ -33,14 +33,15 @@ class SignUpPage extends React.Component {
         const name = encodeURIComponent(this.state.user.name);
         const email = encodeURIComponent(this.state.user.email);
         const password = encodeURIComponent(this.state.user.password);
-        const phone = encodeURIComponent(this.state.user.phone);
-        const country = encodeURIComponent(this.state.user.country);
-        const city = encodeURIComponent(this.state.user.city);
-        const street = encodeURIComponent(this.state.user.street);
-        const house = encodeURIComponent(this.state.user.house);
-        const flat = encodeURIComponent(this.state.user.flat);
+        // const phone = encodeURIComponent(this.state.user.phone);
+        // const country = encodeURIComponent(this.state.user.country);
+        // const city = encodeURIComponent(this.state.user.city);
+        // const street = encodeURIComponent(this.state.user.street);
+        // const house = encodeURIComponent(this.state.user.house);
+        // const flat = encodeURIComponent(this.state.user.flat);
 
-        const formData = `name=${name}&email=${email}&password=${password}&phone=${phone}&country=${country}&city=${city}&street=${street}&house=${house}&flat=${flat}`
+        // const formData = `name=${name}&email=${email}&password=${password}&phone=${phone}&country=${country}&city=${city}&street=${street}&house=${house}&flat=${flat}`
+        const formData = `name=${name}&email=${email}&password=${password}`
 
         const xhr = new XMLHttpRequest();
         xhr.open('post', '/auth/signup');

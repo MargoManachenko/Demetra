@@ -14,30 +14,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    country: {
-        type: String,
-        default: ''
-    },
-    city: {
-        type: String,
-        default: ''
-    },
-    street: {
-        type: String,
-        default: ''
-    },
-    house: {
-        type: String,
-        default: ''
-    },
-    flat: {
-        type: String,
-        default: ''
-    },
-    phone: {
-        type: Number,
-        default: ''
-    },
     crop: [{
         type: Array
     }]

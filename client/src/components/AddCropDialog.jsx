@@ -39,9 +39,7 @@ const AddCropDialog = ({
     SubmitForm,
     onClose,
     open,
-    onChangeCropName,
-    onChangeIndicatorId
-    // cropNames
+    onChangeCropName
 }) => (
     <div>
             <div className="homeBlock">
@@ -69,22 +67,15 @@ const AddCropDialog = ({
                     open={open}
                     onRequestClose={onClose}
                 >
-                    <p>Start typing a crop name</p>
+                    <p>Choose a crop name</p>
                     <AutoComplete
                         floatingLabelText="Crop name"
                         name="cropName"
                         onUpdateInput={onChangeCropName}
-                        filter={AutoComplete.fuzzyFilter}
                         dataSource={cropNames}
                     />
 
-                    <p>Type in the given ID of your indicator</p>
-                    <TextField
-                        floatingLabelText="Indicator ID"
-                        name="indicatorsId"
-                        onChange={onChangeIndicatorId}
-                        autoComplete='off'
-                    />
+                    <h4>Your id will be: As78z9Pi87901</h4>
                 </Dialog>
             </div>
     </div>

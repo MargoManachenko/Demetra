@@ -25,35 +25,35 @@ function validateSignUpForm(payload) {
         errors.password = 'Password must have at least 8 characters.';
     }
 
-    if (!payload || typeof payload.phone !== 'string' || payload.phone.trim().length === 0) {
-        isFormValid = false;
-        errors.phone = 'Please provide your phone number.';
-    }
-
-    if (!payload || typeof payload.country !== 'string' || payload.country.trim().length === 0) {
-        isFormValid = false;
-        errors.country = 'Please provide your country.';
-    }
-
-    if (!payload || typeof payload.city !== 'string' || payload.city.trim().length === 0) {
-        isFormValid = false;
-        errors.city = 'Please provide your city.';
-    }
-
-    if (!payload || typeof payload.street !== 'string' || payload.street.trim().length === 0) {
-        isFormValid = false;
-        errors.street = 'Please provide your house number.';
-    }
-
-    if (!payload || typeof payload.house !== 'string' || payload.house.trim().length === 0) {
-        isFormValid = false;
-        errors.house = 'Please provide your house number.';
-    }
-
-    if (!payload || typeof payload.flat !== 'string' || payload.flat.trim().length === 0) {
-        isFormValid = false;
-        errors.flat = 'Please provide your flat number.';
-    }
+    // if (!payload || typeof payload.phone !== 'string' || payload.phone.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.phone = 'Please provide your phone number.';
+    // }
+    //
+    // if (!payload || typeof payload.country !== 'string' || payload.country.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.country = 'Please provide your country.';
+    // }
+    //
+    // if (!payload || typeof payload.city !== 'string' || payload.city.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.city = 'Please provide your city.';
+    // }
+    //
+    // if (!payload || typeof payload.street !== 'string' || payload.street.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.street = 'Please provide your house number.';
+    // }
+    //
+    // if (!payload || typeof payload.house !== 'string' || payload.house.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.house = 'Please provide your house number.';
+    // }
+    //
+    // if (!payload || typeof payload.flat !== 'string' || payload.flat.trim().length === 0) {
+    //     isFormValid = false;
+    //     errors.flat = 'Please provide your flat number.';
+    // }
 
     if (!isFormValid) {
         message = 'Check the form for errors.';
