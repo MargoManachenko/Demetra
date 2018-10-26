@@ -1,11 +1,15 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import React, { PropTypes } from 'react';
+import { Link, IndexLink } from 'react-router';
 import Auth from '../modules/Auth';
+import {IntlProvider} from 'react-intl';
 
-const Base = ({children}) => (
-    <div>
+const Base = ({ children }) => (
+        <div>
 
         <div className="top-bar">
+            <div className="top-bar-left">
+            </div>
+
             {Auth.isUserAuthenticated() ? (
                 <div className="top-bar-right">
                     <Link to="/logout">Log out</Link>
@@ -19,7 +23,9 @@ const Base = ({children}) => (
 
         </div>
 
+        { /* child component will be rendered here */ }
         {children}
+
 
     </div>
 );

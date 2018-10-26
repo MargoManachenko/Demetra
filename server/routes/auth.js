@@ -1,6 +1,7 @@
 const express = require('express');
 const validator = require('validator');
 const passport = require('passport');
+const Owner = require('mongoose').model('Owner');
 
 const router = new express.Router();
 
@@ -91,6 +92,32 @@ function validateLoginForm(payload) {
     };
 }
 
+function validateLoginEmployeeForm(payload) {
+    const errors = {};
+    let isFormValid = true;
+    let message = '';
+
+    if (!payload || typeof payload.email !== 'string' || payload.email.trim().length === 0) {
+        isFormValid = false;
+        errors.userId = 'Please provide your id.';
+    }
+
+    if (!payload || typeof payload.password !== 'string' || payload.password.trim().length === 0) {
+        isFormValid = false;
+        errors.password = 'Please provide your password.';
+    }
+
+    if (!isFormValid) {
+        message = 'Check the form for errors.';
+    }
+
+    return {
+        success: isFormValid,
+        message,
+        errors
+    };
+}
+
 router.post('/signup', (req, res, next) => {
     const validationResult = validateSignUpForm(req.body);
     if (!validationResult.success) {
@@ -162,5 +189,51 @@ router.post('/login', (req, res, next) => {
         });
     })(req, res, next);
 });
+
+router.post('/loginEmployee', (req, res, next) => {
+    const id = req.body.email;
+    const validationResult = validateLoginEmployeeForm(req.body);
+    if (!validationResult.success) {
+        return res.status(400).json({
+            success: false,
+            message: validationResult.message,
+            errors: validationResult.errors
+        });
+    }
+    Owner.findOne({userId: id}, (err, user) => {
+       if(err){
+           return res.json({
+               success: false,
+               message: 'Incorrect id or password'
+           });
+       }
+        return res.json({
+            success: true,
+            message: 'You have successfully logged in!',
+            userId: user.userId
+        });
+    });
+    // return passport.authenticate('local-loginEmployee', (err, token, userData) => {
+    //     if (err) {
+    //         if (err.name === 'IncorrectCredentialsError') {
+    //             return res.status(400).json({
+    //                 success: false,
+    //                 message: err.message
+    //             });
+    //         }
+    //
+    //         return res.status(400).json({
+    //             success: false,
+    //             message: 'Could not process the form.'
+    //         });
+    //     }
+    //     return res.json({
+    //         success: true,
+    //         message: 'You have successfully logged in!',
+    //         userId: userData.userId
+    //     });
+    // })(req, res, next);
+});
+
 
 module.exports = router;

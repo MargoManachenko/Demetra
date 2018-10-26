@@ -1,8 +1,8 @@
-import React, { PropTypes }  from 'react';
-import SignUpForm from '../components/SignUpForm.jsx'
+import React, { PropTypes } from 'react';
+import LoginEmployeeForm from "../components/LoginEmployeeForm.jsx";
 
 
-class SignUpPage extends React.Component {
+class LoginEmployeePage extends React.Component {
 
     constructor(props, context){
         super(props, context);
@@ -10,50 +10,34 @@ class SignUpPage extends React.Component {
         this.state = {
             errors:{},
             user:{
-                email: '',
-                name: '',
-                password: '',
-                phone: '',
-                country: '',
-                city: '',
-                street: '',
-                house: '',
-                flat: ''
+                userId: '',
+                password: ''
             }
         };
 
         this.ProcessForm = this.ProcessForm.bind(this);
         this.ChangeUser = this.ChangeUser.bind(this);
     }
-
-
     ProcessForm(event){
         event.preventDefault();
 
-        const name = encodeURIComponent(this.state.user.name);
-        const email = encodeURIComponent(this.state.user.email);
+        const userId = encodeURIComponent(this.state.user.userId);
         const password = encodeURIComponent(this.state.user.password);
-        const phone = encodeURIComponent(this.state.user.phone);
-        const country = encodeURIComponent(this.state.user.country);
-        const city = encodeURIComponent(this.state.user.city);
-        const street = encodeURIComponent(this.state.user.street);
-        const house = encodeURIComponent(this.state.user.house);
-        const flat = encodeURIComponent(this.state.user.flat);
 
-        const formData = `name=${name}&email=${email}&password=${password}&phone=${phone}&country=${country}&city=${city}&street=${street}&house=${house}&flat=${flat}`
-
+        const formData = `email=${userId}&password=${password}`;
+        console.log(formData);
         const xhr = new XMLHttpRequest();
-        xhr.open('post', '/auth/signup');
+        xhr.open('post', '/auth/loginEmployee');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.responseType = 'json';
         xhr.addEventListener('load', () => {
             if(xhr.status === 200){
                 this.setState({
-                    errors: {}
+                    errors: {},
+                    userId: xhr.response.userId
                 });
 
-                localStorage.setItem('successMessage', xhr.response.message);
-                this.context.router.replace('/login');
+                this.context.router.replace('/employee');
             }else{
                 const errors = xhr.response.errors ? xhr.response.errors : {};
                 errors.summary = xhr.response.message;
@@ -79,18 +63,19 @@ class SignUpPage extends React.Component {
 
     render() {
         return (
-            <SignUpForm
+            <LoginEmployeeForm
                 onChange={this.ChangeUser}
                 onSubmit={this.ProcessForm}
                 errors={this.state.errors}
                 user={this.state.user}
             />
         )
-    };
+    }
 }
 
-SignUpPage.contextTypes = {
+
+LoginEmployeePage.contextTypes = {
     router: PropTypes.object.isRequired
 };
 
-export default SignUpPage;
+export default LoginEmployeePage;

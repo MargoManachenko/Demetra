@@ -1,89 +1,89 @@
 import Auth from '../modules/Auth';
-import React, {PropTypes} from 'react';
+import React, { PropTypes }  from 'react';
 import AddCropDialog from "../components/AddCropDialog.jsx";
 import UserCropDetails from "../components/UserCropDetails.jsx";
 
 class DashboardPage extends React.Component {
 
-    constructor(props) {
-        super(props);
-        const userId = localStorage.getItem('userId');
+  constructor(props) {
+    super(props);
+    const userId = localStorage.getItem('userId');
 
-        this.state = {
-            secretData: '',
-            successMessage: '',
-            userID: userId,
-            open: false,
-            indicatorsId: '',
-            cropName: '',
-            message: '',
-            error: '',
-            cropList: []
-        };
+    this.state = {
+      secretData: '',
+      successMessage: '',
+      userID: userId,
+      open: false,
+      indicatorsId: '',
+      cropName: '',
+      message: '',
+      error:'',
+      cropList: []
+    };
 
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.onChangeCropName = this.onChangeCropName.bind(this);
-        this.onChangeIndicatorId = this.onChangeIndicatorId.bind(this);
-        this.SubmitForm = this.SubmitForm.bind(this);
-    }
+      this.handleClose = this.handleClose.bind(this);
+      this.handleOpen = this.handleOpen.bind(this);
+      this.onChangeCropName = this.onChangeCropName.bind(this);
+      this.onChangeIndicatorId = this.onChangeIndicatorId.bind(this);
+      this.SubmitForm = this.SubmitForm.bind(this);
+  }
 
 
-    componentDidMount() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('post', '/api/dashboard');
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  componentDidMount() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('post', '/api/dashboard');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-        xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
-        xhr.responseType = 'json';
-        xhr.addEventListener('load', () => {
-            if (xhr.status === 200) {
-                this.setState({
-                    secretData: xhr.response.message
-                });
-            }
+    xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        this.setState({
+          secretData: xhr.response.message
         });
-        xhr.send();
+      }
+    });
+      xhr.send();
 
-        const xhr2 = new XMLHttpRequest();
-        const userId = this.state.userID;
-        const formData = `userId=${userId}`;
-        xhr2.open('post', '/crop/getAllCrop');
-        xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr2.responseType = 'json';
-        xhr2.addEventListener('load', () => {
-            if (xhr2.status === 200) {
-                this.setState({
-                    cropList: xhr2.response.cropList
-                });
-            }
-        });
-        xhr2.send(formData);
+      const xhr2 = new XMLHttpRequest();
+      const userId = this.state.userID;
+      const formData = `userId=${userId}`;
+      xhr2.open('post', '/crop/getAllCrop');
+      xhr2.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      xhr2.responseType = 'json';
+      xhr2.addEventListener('load', () => {
+          if (xhr2.status === 200) {
+              this.setState({
+                  cropList: xhr2.response.cropList
+              });
+          }
+      });
+      xhr2.send(formData);
 
-    }
+  }
 
-    handleOpen() {
+    handleOpen(){
         this.setState({open: true});
     }
 
-    handleClose() {
+    handleClose(){
         this.setState({open: false});
     }
 
-    onChangeIndicatorId(event) {
+    onChangeIndicatorId(event){
         const newIndicatorsId = event.target.value;
         this.setState({
             indicatorsId: newIndicatorsId
         });
     }
 
-    onChangeCropName(searchText) {
+    onChangeCropName(searchText){
         this.setState({
             cropName: searchText
         });
     };
 
-    SubmitForm(event) {
+    SubmitForm(event){
         event.preventDefault();
 
         const userID = this.state.userID;
@@ -109,73 +109,76 @@ class DashboardPage extends React.Component {
         xhr.send(formData);
     }
 
-    render() {
-        let cropListToRender = [];
-        if (this.state.cropList.length !== 0) {
-            for (let i = 0; i < this.state.cropList.length; i++) {
-                cropListToRender.push(
-                    <UserCropDetails
-                        key={i}
-                        cropId={this.state.cropList[i]._id}
-                        cropName={this.state.cropList[i].cropName}
-                        indicatorsId={this.state.cropList[i].indicatorsId}
-                        normalTemperature={this.state.cropList[i].normalTemperature}
-                        normalHumidity={this.state.cropList[i].normalHumidity}
-                        seedsPricePerKg={this.state.cropList[i].seedsPricePerKg}
-                        cropPricePerKg={this.state.cropList[i].cropPricePerKg}
-                        maturationTimeInMonths={this.state.cropList[i].maturationTimeInMonths}
-                        currentTemperature={this.state.cropList[i].currentTemperature}
-                        currentHumidity={this.state.cropList[i].currentHumidity}
-                        harvestingDate={this.state.cropList[i].harvestingDate}
-                        harvestingAmount={this.state.cropList[i].harvestingAmount}
-                        sowingDate={this.state.cropList[i].sowingDate}
-                        sowingAmount={this.state.cropList[i].sowingAmount}
-                        payed={this.state.cropList[i].payed}
-                    />
-                );
-            }
-            return (
-                <div>
-                    {this.state.error && <p className="error-message">{this.state.error}</p>}
-                    {this.state.message && <p className="success-message">{this.state.message}</p>}
-                    <AddCropDialog
-                        onClose={this.handleClose}
-                        OpenDialog={this.handleOpen}
-                        open={this.state.open}
-                        onChangeCropName={this.onChangeCropName}
-                        onChangeIndicatorId={this.onChangeIndicatorId}
-                        SubmitForm={this.SubmitForm}
-                    />
-                    <div className="containerForNight">
-                        {cropListToRender}
-                    </div>
-                </div>
-
+  render() {
+        console.log(this.state);
+      let cropListToRender = [];
+      if(this.state.cropList.length !== 0){
+        for(let i = 0; i < this.state.cropList.length; i++){
+            cropListToRender.push(
+                <UserCropDetails
+                key={i}
+                cropId={this.state.cropList[i]._id}
+                cropName={this.state.cropList[i].cropName}
+                indicatorsId={this.state.cropList[i].indicatorsId}
+                normalTemperature={this.state.cropList[i].normalTemperature}
+                normalHumidity={this.state.cropList[i].normalHumidity}
+                seedsPricePerKg={this.state.cropList[i].seedsPricePerKg}
+                cropPricePerKg={this.state.cropList[i].cropPricePerKg}
+                maturationTimeInMonths={this.state.cropList[i].maturationTimeInMonths}
+                currentTemperature={this.state.cropList[i].currentTemperature}
+                currentHumidity={this.state.cropList[i].currentHumidity}
+                harvestingDate={this.state.cropList[i].harvestingDate}
+                harvestingAmount={this.state.cropList[i].harvestingAmount}
+                sowingDate={this.state.cropList[i].sowingDate}
+                sowingAmount={this.state.cropList[i].sowingAmount}
+                payed={this.state.cropList[i].payed}
+                />
             );
         }
-        else {
-            return (
-                <div>
-                    <div className="homeBlockHeadingBig">
-                        {this.state.error && <p className="error-message">{this.state.error}</p>}
-                        {this.state.message && <p className="success-message">{this.state.message}</p>}
+          console.log(this.state.cropList);
+          return (
+              <div>
+                  {this.state.error && <p className="error-message">{this.state.error}</p>}
+                  {this.state.message && <p className="success-message">{this.state.message}</p>}
+                  <AddCropDialog
+                      onClose={this.handleClose}
+                      OpenDialog={this.handleOpen}
+                      open={this.state.open}
+                      onChangeCropName={this.onChangeCropName}
+                      onChangeIndicatorId={this.onChangeIndicatorId}
+                      SubmitForm={this.SubmitForm}
+                  />
+                  <div className="containerForNight">
+                      {cropListToRender}
+                  </div>
+              </div>
 
-                        <p style={{color: 'white'}}>You don't have any crop added. Start now.</p>
-                    </div>
+          );
+      }
+      else{
+          return (
+              <div>
+                  <div className="homeBlockHeadingBig">
+                  {this.state.error && <p className="error-message">{this.state.error}</p>}
+                  {this.state.message && <p className="success-message">{this.state.message}</p>}
 
-                    <AddCropDialog
-                        onClose={this.handleClose}
-                        OpenDialog={this.handleOpen}
-                        open={this.state.open}
-                        onChangeCropName={this.onChangeCropName}
-                        onChangeIndicatorId={this.onChangeIndicatorId}
-                        SubmitForm={this.SubmitForm}
-                    />
+                      <p style={{color:'white'}}>You don't have any crop added. Start now.</p>
+                  </div>
 
-                </div>
-            );
-        }
-    }
+                  <AddCropDialog
+                      onClose={this.handleClose}
+                      OpenDialog={this.handleOpen}
+                      open={this.state.open}
+                      onChangeCropName={this.onChangeCropName}
+                      onChangeIndicatorId={this.onChangeIndicatorId}
+                      SubmitForm={this.SubmitForm}
+                      //cropNames={this.state.cropNames}
+                  />
+
+              </div>
+          );
+      }
+  }
 }
 
 DashboardPage.contextTypes = {

@@ -11,21 +11,23 @@ require("babel-core").transform("code", {
 require('./server/models').connect(config.dbUri);
 
 const app = express();
-// tell the app to look for static files
+// tell the app to look for static files in these directories
 app.use(express.static('./server/static/'));
 app.use(express.static('./client/dist/'));
 app.use('/static', express.static(__dirname + '/client/dist'));
 
 // tell the app to parse HTTP body messages
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 // pass the passport middleware
 app.use(passport.initialize());
 
 // load passport strategies
 const localSignupStrategy = require('./server/passport/local-signup');
 const localLoginStrategy = require('./server/passport/local-login');
+const localLoginEmployeeStrategy = require('./server/passport/local-loginEmployee');
 passport.use('local-signup', localSignupStrategy);
 passport.use('local-login', localLoginStrategy);
+passport.use('local-loginEmployee', localLoginEmployeeStrategy);
 
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./server/middleware/auth-check');
@@ -40,7 +42,10 @@ app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 app.use('/crop', cropRoutes);
 
+
+// app.set('port', process.env.PORT || 3000);
+
 // start the server
-app.listen(process.env.PORT || 3001, () => {
-    console.log('Server is running on http://localhost:3001 or http://127.0.0.1:3001');
+app.listen( process.env.PORT || 3001, () => {
+  console.log('Server is running on http://localhost:3001 or http://127.0.0.1:3001');
 });

@@ -11,6 +11,7 @@ module.exports.connect = (uri) => {
 
     //load models
     require('./Client');
+    require('./Owner');
     require('./Crop');
     require('./CropConstants');
     require('./Indicator');

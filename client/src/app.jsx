@@ -8,8 +8,10 @@ import routes from './routes.js';
 
 // remove tap delay, essential for MaterialUI to work properly
 injectTapEventPlugin();
-
 const muiTheme = getMuiTheme({
+  palette: {
+    //textColor: 'white'
+  },
   card: {
   	backgroundColor: 'rgba(255,255,255,0.5)',
   	borderRadius: 20

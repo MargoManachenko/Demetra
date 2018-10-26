@@ -1,4 +1,4 @@
 {
-  "dbUri": "mongodb://localhost:27017/demetra",
-  "jwtSecret": "a secret phrase"
+  "dbUri": "mongodb://exstream_admin:v6y8e6k6@cluster0-shard-00-00-jpjpi.mongodb.net:27017,cluster0-shard-00-01-jpjpi.mongodb.net:27017,cluster0-shard-00-02-jpjpi.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
+  "jwtSecret": "a secret phrase!!"
 }
